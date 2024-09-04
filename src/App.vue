@@ -2,13 +2,53 @@
   <nav>
     <router-link to="/" class="logo">MOVIEWEB</router-link>
     <div class="searchIconWrapper">
-      <input placeholder="검색어를 입력하세요"/>
-      <font-awesome-icon icon="fa-solid fa-search" color="white"/>
+      <Search :onSearch="handleSearch" />
+
     </div>
   </nav>
   <router-view/>
 </template>
+<script>
+import Search from './components/SearchContainer.vue';
+import { ref } from 'vue';
 
+const IMG_BASE_URL = "https://image.tmdb.org/t/p/w1280/";
+
+export default {
+  name: 'App',
+  components: {
+    Search
+  },
+  setup() {
+    const movies = ref([]);
+    const loading = ref(false);
+    const error = ref('');
+    
+    const handleSearch = async (query) => {
+      if (query.trim().length === 0) {
+        movies.value = [];
+        return;
+      }
+
+      loading.value = true;
+      error.value = '';
+      
+      try {
+        const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=b91f1d6e4a9522497deb2df1da76a3f9&language=ko&query=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        movies.value = data.results || [];
+      } catch (err) {
+        error.value = '검색 오류';
+        console.log(error.value);
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    return { movies, loading, error, handleSearch, IMG_BASE_URL };
+  }
+}
+</script>
 <style>
 #app {
  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -56,15 +96,5 @@ nav a {
   margin-right: 10px;
 }
 
-input {
-  margin-right: 10px;
-  padding: 5px;
-  font-size: 14px;
-  border: none;
-  outline: none;
-  background-color: #373b69;
-  border-bottom: 1px solid #888;
-  color: white;
-}
 
 </style>
