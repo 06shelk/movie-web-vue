@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <!-- <HeaderCom /> -->
     <div class="movie-container-list">
       <MovieContainer
         v-for="movie in movies"
         :key="movie.id"
         :movie="movie"
+        @movie-clicked="goToDetailPage"
       />
     </div>
   </div>
@@ -27,21 +27,29 @@ export default {
   },
   async mounted() {
     try {
-      const movieData = await getMovieData();
-      this.movies = movieData.results || [];
+      const movieData = await getMovieData(); // API 호출
+      this.movies = movieData.results || []; // 데이터의 results 필드가 존재하는지 확인
     } catch (error) {
       console.error('Error loading movie data:', error);
-      this.movies = [];
+      this.movies = []; // 오류 발생 시 빈 배열로 초기화
+    }
+  },
+   methods: {
+    goToDetailPage(movieId) {
+      this.$router.push({
+        path: `/movie/detail/${movieId}`
+      });
     }
   }
 }
 </script>
 
 <style scoped>
-.movie-container-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 50px;
-}
+  .movie-container-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+
+  }
 </style>

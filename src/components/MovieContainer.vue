@@ -1,5 +1,5 @@
 <template>
-  <div class="movie-container">
+  <div class="movie-container"  @click="handleClick">
     <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" />
     <div class="movieInfo">
         <h4>{{ movie.title }}</h4>
@@ -10,8 +10,15 @@
 
 <script>
 export default {
+  name: 'MovieContainer',
   props: {
     movie: Object
+  },
+  methods: {
+    handleClick() {
+      // 클릭 시 부모 컴포넌트에 이벤트 발생
+      this.$emit('movie-clicked', this.movie.id);
+    }
   }
 }
 </script>
@@ -46,5 +53,11 @@ export default {
     .movieInfo p {
         margin-left: 3px;
         color: white;
+    }
+
+    @media (max-width: 768px) {
+        .movie-container {
+            width: 80%
+        }
     }
 </style>
