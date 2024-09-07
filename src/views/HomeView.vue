@@ -20,6 +20,7 @@ export default {
   components: {
     MovieContainer
   },
+  
   data() {
     return {
       movies: []

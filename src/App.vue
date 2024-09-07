@@ -1,15 +1,10 @@
 <template>
-  <nav>
-    <router-link to="/" class="logo">MOVIEWEB</router-link>
-    <div class="searchIconWrapper">
-      <Search :onSearch="handleSearch" />
-
-    </div>
-  </nav>
+   <HeaderContainer @search="handleSearch" />
   <router-view/>
 </template>
+
 <script>
-import Search from './components/SearchContainer.vue';
+import HeaderContainer from './components/HeaderContainer.vue';
 import { ref } from 'vue';
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w1280/";
@@ -17,7 +12,7 @@ const IMG_BASE_URL = "https://image.tmdb.org/t/p/w1280/";
 export default {
   name: 'App',
   components: {
-    Search
+    HeaderContainer
   },
   setup() {
     const movies = ref([]);
