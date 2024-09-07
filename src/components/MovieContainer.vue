@@ -3,14 +3,21 @@
     <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="Movie Poster" />
     <div class="movieInfo">
         <h4>{{ movie.title }}</h4>
-        <p>{{ movie.vote_average }}</p>
+        <RatingContainer :movie="movie" />
     </div>
   </div>
 </template>
 
+
+
 <script>
+import RatingContainer from './RatingContainer.vue';
+
 export default {
   name: 'MovieContainer',
+  components: {
+    RatingContainer
+  },
   props: {
     movie: Object
   },
@@ -35,6 +42,7 @@ export default {
 
     .movie-container img {
         max-width: 100%;
+       
     }
 
     .movieInfo {
@@ -42,6 +50,7 @@ export default {
         padding: 20px;
         justify-content: space-between;
         align-items: center;
+        overflow: hidden; 
     }
 
     .movieInfo h4 {
